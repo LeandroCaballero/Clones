@@ -72,7 +72,7 @@ const MainLoyout = ({ children }: Props) => {
             <li className="flex flex-col items-center">
               <Icon icon="fluent:table-32-filled" hFlip={true} />
               <div className="flex items-center">
-                <p>Para negocios</p>
+                <p className="text-[11px]">Para negocios</p>
                 <Icon icon="raphael:arrowdown" hFlip={true} />
               </div>
             </li>
