@@ -10,32 +10,32 @@ type Props = {
 const MainLoyout = ({ children }: Props) => {
   return (
     <>
-      <nav className="bg-[#1B1F23] py-3 flex justify-center">
+      <nav className="bg-[#1B1F23] py-2 flex justify-center">
         {/* <div className="text-white flex flex-row justify-between items-center w-10/12"> */}
-        <div className="text-white grid grid-cols-12 w-10/12 border">
+        <div className="text-white grid grid-cols-11 items-center w-10/12">
           <div className="col-span-4 flex flex-row items-center gap-x-2">
             <img
               src={Logo}
               alt=""
-              className="bg-white rounded-md p-1 w-10 h-10"
+              className="bg-white rounded-sm p-1 w-8 h-8"
             />
-            <div className="flex flex-row w-fit items-center bg-[#38434F] rounded-md">
-              <div className="p-2">
-                <Icon
-                  icon="ic:baseline-search"
-                  rotate={3}
-                  hFlip={true}
-                  className=""
-                />
-              </div>
+            <div className="flex flex-row items-center rounded-md relative w-full">
+              {/* <div className="absolute"> */}
+              <Icon
+                icon="ic:baseline-search"
+                rotate={3}
+                hFlip={true}
+                className="absolute ml-3"
+              />
+              {/* </div> */}
               <input
                 type="text"
                 placeholder="Buscar..."
-                className="h-full border w-full rounded-md transition-all duration-150 focus:outline-none ease-in focus:w-full bg-[#38434F] text-white"
+                className="h-8 pl-8 w-3/4 rounded-md transition-all duration-150 focus:pl-10 ease-in focus:w-full bg-[#38434F] text-white"
               />
             </div>
           </div>
-          <ul className="col-span-6 border flex flex-row justify-end items-center gap-x-6 text-sm">
+          <ul className="col-span-5 w-[97%] border-r flex flex-row justify-center items-center gap-x-6 text-sm h-fit">
             <li className="flex flex-col items-center">
               <Icon icon="ion:home-sharp" className="w-5 h-5" />
               <a href="#inicio">Inicio</a>
@@ -68,15 +68,22 @@ const MainLoyout = ({ children }: Props) => {
               </div>
             </li>
           </ul>
-          <ul className="col-span-2 border flex flex-row items-center text-sm">
+          <ul className="col-span-2 flex flex-row items-center text-sm">
             <li className="flex flex-col items-center">
-              <Icon icon="fluent:table-32-filled" hFlip={true} />
+              <Icon
+                className="w-5 h-5"
+                icon="fluent:table-32-filled"
+                hFlip={true}
+              />
               <div className="flex items-center">
-                <p className="text-[11px]">Para negocios</p>
+                <p className="text-[10px]">Para negocios</p>
                 <Icon icon="raphael:arrowdown" hFlip={true} />
               </div>
             </li>
-            <a href="" className="w-32 text-center text-xs">
+            <a
+              href=""
+              className="w-32 text-center text-xs text-[#EB9535] underline"
+            >
               Consigue que te contraten más rápido. Prueba Premium gratis.
             </a>
           </ul>

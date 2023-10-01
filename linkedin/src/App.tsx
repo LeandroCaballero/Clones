@@ -32,7 +32,7 @@ function App() {
       <MainLoyout>
         <div className="grid grid-cols-10 w-10/12 border border-black mx-auto gap-x-5">
           {/* Personal info */}
-          <div className="bg-[#1B1F23] relative overflow-hidden col-span-2 text-white text-center rounded-lg">
+          <div className="bg-[#1B1F23] h-fit relative overflow-hidden col-span-2 text-white text-center rounded-lg">
             <div className="h-14 bg-[#5B696B] absolute w-full" />
             <div className="p-3">
               <img
@@ -64,11 +64,12 @@ function App() {
               <p className="text-[#A4A5A7] text-sm">
                 Accede a información y herramientas exclusivas
               </p>
-              <a href="" className="text-sm underline">
+              <a href="" className="text-xs underline m-0 p-0">
                 Consigue que te contraten más rápido. Prueba Premium gratis.
               </a>
             </div>
             <hr className="border-[#373A3D]" />
+
             <div className="p-3 flex flex-row items-center gap-x-2">
               <Icon icon="subway:mark-2" />
               <p className="text-sm">Marcapáginas</p>
