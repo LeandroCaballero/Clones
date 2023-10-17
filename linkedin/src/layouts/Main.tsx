@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import Logo from "../assets/logo.png"
 import Avatar from "../assets/perfil.jpg"
 import { Icon } from "@iconify/react"
@@ -8,6 +8,28 @@ type Props = {
 }
 
 const MainLoyout = ({ children }: Props) => {
+  const [visibility, setVisibility] = useState(false)
+
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.hidden) {
+  //       // El usuario cambió a otra pestaña o minimizó la ventana
+  //       console.log("El usuario cambió de pestaña o minimizó la ventana.")
+  //       // Realiza acciones cuando la pestaña se vuelve invisible
+  //     } else {
+  //       // El usuario volvió a la pestaña actual
+  //       console.log("El usuario volvió a la pestaña actual.")
+  //       // Realiza acciones cuando la pestaña se vuelve visible
+  //     }
+  //   }
+
+  //   document.addEventListener("visibilitychange", handleVisibilityChange)
+
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange)
+  //   }
+  // }, [])
+
   return (
     <>
       <nav className="bg-[#1B1F23] py-2 flex justify-center">
@@ -60,11 +82,21 @@ const MainLoyout = ({ children }: Props) => {
               <a href="#inicio">Notificaciones</a>
             </li>
             {/* Avatar */}
-            <li>
+            <li
+              className="relative cursor-pointer"
+              onClick={() => setVisibility(!visibility)}
+            >
               <img src={Avatar} alt="" className="w-5 h-5 rounded-full" />
               <div className="flex items-center">
                 <p>Yo</p>
                 <Icon icon="raphael:arrowdown" hFlip={true} />
+              </div>
+              <div
+                className={`mt-3 absolute border transition-opacity duration-150 ease-in-out opacity-${
+                  visibility ? "1" : "0"
+                }`}
+              >
+                test
               </div>
             </li>
           </ul>

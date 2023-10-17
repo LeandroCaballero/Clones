@@ -4,6 +4,7 @@ import Avatar from "../../assets/perfil.jpg"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/es"
+import { useEffect, useRef, useState } from "react"
 
 dayjs.locale("es")
 dayjs.extend(relativeTime)
@@ -28,6 +29,22 @@ interface Props {
 }
 
 const Post = ({ information }: Props) => {
+  const [visibilityOptions, setVisibilityOptions] = useState(false)
+  const refOne = useRef(null)
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true)
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true)
+    }
+  }, [])
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (!refOne.current?.contains(e.target)) {
+      setVisibilityOptions(false)
+    }
+  }
+
   const sumReactions = () => {
     let sum = 0
     for (const pais in information.reactions) {
@@ -51,22 +68,56 @@ const Post = ({ information }: Props) => {
               />
               <div>
                 <p>{information.name}</p>
-                <p className="text-sm text-[#A4A5A7]">{information.job}</p>
+                <p className="text-xs text-[#A4A5A7]">{information.job}</p>
                 <div className="flex items-center">
-                  <p className="text-sm text-[#A4A5A7]">
+                  <p className="text-xs text-[#A4A5A7]">
                     {dayjs().from(information.createDate, true)} •
                   </p>
                   <Icon
                     icon="bx:world"
-                    className="text-sm text-[#A4A5A7] ml-1"
+                    className="text-xs text-[#A4A5A7] ml-1"
                   />
                 </div>
               </div>
             </div>
-            <div>
-              <button className="p-1 rounded-full hover:bg-[#44474B] transition-all duration-150 ease-in-out">
+            <div className="">
+              <button
+                onClick={() => setVisibilityOptions(!visibilityOptions)}
+                className="p-1 relative rounded-full hover:bg-[#44474B] transition-all duration-150 ease-in-out"
+              >
                 <Icon icon="mi:options-horizontal" className="text-2xl" />
               </button>
+              <div
+                ref={refOne}
+                className={`absolute py-1  transition-opacity duration-200 ease-out opacity-${
+                  visibilityOptions ? "100" : "0"
+                } flex flex-col rounded-bl-lg rounded-br-lg rounded-tl-lg border border-[#373A3D] -translate-x-[100%] w-80 bg-[#1B1F23]`}
+              >
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="subway:mark-2" className="w-5 h-5" />
+                  <p>Guardar</p>
+                </button>
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="uil:link" className="w-5 h-5" />
+                  <p>Copiar enlace a la publicación</p>
+                </button>
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="ph:code" className="w-5 h-5" />
+                  <p>Insertar esta publicación</p>
+                </button>
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="ph:eye-slash" className="w-5 h-5" />
+                  <p>No quiero ver esto</p>
+                </button>
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="carbon:close-filled" className="w-5 h-5" />
+                  <p>Dejar de seguir a {information.name}</p>
+                </button>
+                <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
+                  <Icon icon="solar:flag-bold" className="w-5 h-5" />
+                  <p>Denunciar publicación</p>
+                </button>
+              </div>
               <button className="p-1 rounded-full hover:bg-[#44474B] transition-all duration-150 ease-in-out">
                 <Icon icon="material-symbols:close" className="text-2xl" />
               </button>
