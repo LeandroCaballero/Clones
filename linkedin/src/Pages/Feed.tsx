@@ -27,7 +27,7 @@ const Feed = () => {
     shared: 9,
   }
   return (
-    <div className="grid grid-cols-10 w-10/12 border border-black mx-auto gap-x-5">
+    <div className="grid grid-cols-10 w-[85%] border border-black mx-auto gap-x-5">
       {/* Personal info */}
       <div className="bg-[#1B1F23] h-fit relative overflow-hidden col-span-2 text-white text-center rounded-lg">
         <div className="h-14 bg-[#5B696B] absolute w-full" />
@@ -67,7 +67,7 @@ const Feed = () => {
 
         <div className="p-3 flex flex-row items-center gap-x-2">
           <Icon icon="subway:mark-2" />
-          <p className="text-sm">Marcapáginas</p>
+          <p className="text-xs">Marcapáginas</p>
         </div>
       </div>
 
@@ -110,7 +110,9 @@ const Feed = () => {
         </div>
         <Post information={postTest} />
       </div>
-      <div className="bg-[#1B1F23] col-span-3 text-white text-center rounded-lg p-3 h-fit">
+
+      {/* Right panel */}
+      <div className="bg-[#1B1F23] col-span-3 w-11/12 text-white text-center rounded-lg p-3 h-fit">
         <div className="flex flex-row justify-between items-center">
           <p className="mb-2 font-bold">Añadir a tu feed</p>
           <Icon icon="mdi:information-box" className="rounded-md" />

@@ -6,6 +6,13 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/es"
 import { useEffect, useRef, useState } from "react"
 
+import celebrate from "../../assets/svg/celebrate.svg"
+import funny from "../../assets/svg/funny.svg"
+import interest from "../../assets/svg/interest.svg"
+import love from "../../assets/svg/love.svg"
+import recommendation from "../../assets/svg/recommendation.svg"
+import support from "../../assets/svg/support.svg"
+
 dayjs.locale("es")
 dayjs.extend(relativeTime)
 
@@ -147,7 +154,7 @@ const Post = ({ information }: Props) => {
           </div>
           <hr className="border-[#373A3D] mt-2" />
           <div className="flex flex-row gap-x-1 items-center justify-between mt-1">
-            <button className="flex flex-row items-center gap-x-2 p-3 rounded-md hover:bg-[#44474B] transition-all duration-150 ease-in-out">
+            <button className="peer/draft relative flex flex-row items-center gap-x-2 p-3 rounded-md hover:bg-[#44474B] transition-all duration-150 ease-in-out">
               <Icon
                 icon="simple-line-icons:like"
                 hFlip={true}
@@ -155,6 +162,51 @@ const Post = ({ information }: Props) => {
               />
               <p className="font-bold text-sm">Recomendar</p>
             </button>
+            <div className="peer-hover/draft:opacity-100 opacity-0 absolute -translate-y-14 flex gap-x-2 px-1 rounded bg-[#1B1F23] py-1 shadow-sm shadow-black">
+              <button className="group">
+                <img
+                  src={recommendation}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+              di
+              <button className="group">
+                <img
+                  src={celebrate}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+              <button className="group">
+                <img
+                  src={support}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+              <button className="group">
+                <img
+                  src={love}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+              <button className="group">
+                <img
+                  src={interest}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+              <button className="group">
+                <img
+                  src={funny}
+                  alt=""
+                  className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
+                />
+              </button>
+            </div>
             <button className="flex flex-row items-center gap-x-2 p-3 rounded-md hover:bg-[#44474B] transition-all duration-150 ease-in-out">
               <Icon icon="mi:message" className=" rounded-md text-2xl" />
               <p className="font-bold text-sm">Comentar</p>
