@@ -1,14 +1,12 @@
-import Feed from "./Pages/Feed"
-import MyNetwork from "./Pages/MyNetwork"
+import { RouterProvider } from "react-router-dom"
+import { router } from "./Router"
 import MainLoyout from "./layouts/Main"
+import Feed from "./Pages/Feed"
 
 function App() {
   return (
     <>
-      <MainLoyout>
-        {/* <Feed /> */}
-        <MyNetwork />
-      </MainLoyout>
+      <RouterProvider router={router} />
     </>
   )
 }

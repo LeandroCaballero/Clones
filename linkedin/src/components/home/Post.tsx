@@ -96,8 +96,8 @@ const Post = ({ information }: Props) => {
               </button>
               <div
                 ref={refOne}
-                className={`absolute py-1  transition-opacity duration-200 ease-out opacity-${
-                  visibilityOptions ? "100" : "0"
+                className={`absolute py-1  transition-opacity duration-200 ease-out ${
+                  visibilityOptions ? "opacity-100" : "opacity-0 -z-10"
                 } flex flex-col rounded-bl-lg rounded-br-lg rounded-tl-lg border border-[#373A3D] -translate-x-[100%] w-80 bg-[#1B1F23]`}
               >
                 <button className="flex gap-x-3 items-center text-sm font-bold p-4 hover:bg-[#44474B]">
@@ -162,7 +162,7 @@ const Post = ({ information }: Props) => {
               />
               <p className="font-bold text-sm">Recomendar</p>
             </button>
-            <div className="peer-hover/draft:opacity-100 opacity-0 absolute -translate-y-14 flex gap-x-2 px-1 rounded bg-[#1B1F23] py-1 shadow-sm shadow-black">
+            <div className="peer-hover/draft:opacity-100 -z-10 peer-hover/draft:z-10 opacity-0 absolute -translate-y-14 flex gap-x-2 px-1 rounded bg-[#1B1F23] py-1 shadow-sm shadow-black">
               <button className="group">
                 <img
                   src={recommendation}
@@ -170,7 +170,7 @@ const Post = ({ information }: Props) => {
                   className="w-9 group-hover:-translate-y-3 transition-all duration-150 ease-linear group-hover:scale-150"
                 />
               </button>
-              di
+
               <button className="group">
                 <img
                   src={celebrate}
