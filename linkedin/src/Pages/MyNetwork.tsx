@@ -129,14 +129,13 @@ const MyNetwork = () => {
               técnicos de selección con InMail.
             </p>
             <div className="relative flex gap-x-2 py-1 my-2">
-              <div>
-                {info.map((invi, index) => {
-                  const left = "left-" + index * 3
+              <div className="flex border w-8 overflow-">
+                {info.map((invi) => {
                   return (
-                    <div key={invi.id} className={`absolute top-0 ${left}`}>
+                    <div key={invi.id}>
                       <img
                         key={invi.id}
-                        className={`rounded-full w-7`}
+                        className={`rounded-full !w-7 h-7`}
                         src={invi.image}
                         alt=""
                       />
