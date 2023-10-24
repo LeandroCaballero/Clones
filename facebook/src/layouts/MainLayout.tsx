@@ -134,8 +134,11 @@ const MainLayout = ({ children }: Props) => {
               </button>
             </div>
           </div>
-          {friends.map(() => (
-            <button className="flex items-center gap-x-2 w-full rounded-md p-2 hover:bg-[#303031] transition-all duration-150 ease-in-out">
+          {friends.map((_, index) => (
+            <button
+              key={index}
+              className="flex items-center gap-x-2 w-full rounded-md p-2 hover:bg-[#303031] transition-all duration-150 ease-in-out"
+            >
               <img src={Avatar} alt="" className="w-7 h-7 rounded-full" />
               <p className="font-[500]">Leandro Caballero</p>
             </button>
@@ -145,7 +148,10 @@ const MainLayout = ({ children }: Props) => {
             Conversaciones en grupo
           </p>
           {friends.slice(0, 3).map((_, index) => (
-            <button className="flex items-center gap-x-2 w-full rounded-md p-2 hover:bg-[#303031] transition-all duration-150 ease-in-out">
+            <button
+              key={index}
+              className="flex items-center gap-x-2 w-full rounded-md p-2 hover:bg-[#303031] transition-all duration-150 ease-in-out"
+            >
               <img src={Avatar} alt="" className="w-7 h-7 rounded-full" />
               <p className="font-[500]">Grupo {index + 1}</p>
             </button>
