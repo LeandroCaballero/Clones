@@ -8,28 +8,16 @@ import "swiper/css/navigation"
 import History from "../components/home/History"
 import { useRef, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
-import clarin from "../assets/imagesHistory/clarin.jpg"
-import infobae from "../assets/imagesHistory/infobae.jpg"
-import todonoticias from "../assets/imagesHistory/todonoticias.jpg"
-import clarinLogo from "../assets/imagesHistory/clarin-logo.jpg"
-import infobaeLogo from "../assets/imagesHistory/infobae-logo.jpg"
-import fulanoLogo from "../assets/imagesHistory/valdes-logo.jpg"
+
 import profile from "../assets/perfil.jpg"
+import liveVideoIcon from "../assets/icons/live-video.png"
+import filesIcon from "../assets/icons/files.png"
+import feelingIcon from "../assets/icons/feeling.png"
+import { histories } from "../utils/infotest"
 
 const Home = () => {
   const swiperRef = useRef<SwiperRef>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const slides = [
-    { name: "Clarin", image: clarin, logo: clarinLogo },
-    { name: "Infobae", image: infobae, logo: infobaeLogo },
-    { name: "Fulano", image: todonoticias, logo: fulanoLogo },
-    { name: "Clarin", image: clarin, logo: clarinLogo },
-    { name: "Infobae", image: infobae, logo: infobaeLogo },
-    { name: "Fulano", image: todonoticias, logo: fulanoLogo },
-    { name: "Clarin", image: clarin, logo: clarinLogo },
-    { name: "Infobae", image: infobae, logo: infobaeLogo },
-    { name: "Fulano", image: todonoticias, logo: fulanoLogo },
-  ]
 
   const prevSlides = () => {
     if (swiperRef.current) {
@@ -48,7 +36,7 @@ const Home = () => {
   }
 
   return (
-    <div className="border text-white bg-[#18191A] flex justify-center">
+    <div className="text-white bg-[#18191A] flex flex-col items-center">
       <Swiper
         ref={swiperRef}
         spaceBetween={5}
@@ -61,12 +49,10 @@ const Home = () => {
         pagination={{
           clickable: true,
         }}
-        // navigation={true}
-        // modules={[Navigation]}
-        className="w-[82%] mt-6 relative"
+        className="w-[82%] mt-6 relative h-[250px]"
       >
         <SwiperSlide>
-          <div className="group/history relative rounded-xl h-full overflow-hidden ">
+          <div className="group/history relative rounded-xl h-full overflow-hidden">
             <img
               src={profile}
               alt=""
@@ -80,9 +66,9 @@ const Home = () => {
             </div>
           </div>
         </SwiperSlide>
-        {slides.map((slide, index) => (
+        {histories.map((history, index) => (
           <SwiperSlide key={index}>
-            <History data={slide} />
+            <History data={history} />
           </SwiperSlide>
         ))}
 
@@ -96,11 +82,34 @@ const Home = () => {
         </button>
         <button
           onClick={nextSlides}
-          className="absolute bg-[#3E4042] rounded-full p-2 right-4 top-1/2 -translate-y-1/2 right-0 z-10 transition-all duration-200 ease-linear hover:bg-[#525355]"
+          className="absolute bg-[#3E4042] rounded-full p-2 right-4 top-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear hover:bg-[#525355]"
         >
           <Icon icon="mingcute:right-line" className="w-7 h-7" />
         </button>
       </Swiper>
+      <div className="mt-5 w-2/3 bg-[#242526] rounded-lg px-4 py-3">
+        <div className="flex gap-x-3">
+          <img src={profile} className="rounded-full w-10" alt="" />
+          <button className="w-full text-left rounded-full text-[#B0B3B8] bg-[#3A3B3C] hover:bg-[#4E4F50] py-1 px-2">
+            ¿Qué estás pensando, Leandro?
+          </button>
+        </div>
+        <hr className="border-[#3A3B3C] mt-3 mb-2" />
+        <div className="flex">
+          <button className="flex gap-x-2 rounded-md p-2 text-[#B0B3B8] font-semibold text-[15px] hover:bg-[#3A3B3C] transition-all duration-150 ease-in-out">
+            <img src={liveVideoIcon} alt="" />
+            <p>Video en vivo</p>
+          </button>
+          <button className="flex gap-x-2 rounded-md p-2 text-[#B0B3B8] font-semibold text-[15px] hover:bg-[#3A3B3C] transition-all duration-150 ease-in-out">
+            <img src={filesIcon} alt="" />
+            <p>Foto/video</p>
+          </button>
+          <button className="flex gap-x-2 rounded-md p-2 text-[#B0B3B8] font-semibold text-[15px] hover:bg-[#3A3B3C] transition-all duration-150 ease-in-out">
+            <img src={feelingIcon} alt="" />
+            <p>Sentimiento/Actividad</p>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

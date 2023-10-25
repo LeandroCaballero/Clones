@@ -8,11 +8,11 @@ interface Props {
 
 const History = ({ data }: Props) => {
   return (
-    <div className="group/history relative rounded-xl h-full overflow-hidden ">
+    <div className="group/history relative rounded-xl h-full overflow-hidden">
       <img
         src={data.image}
         alt=""
-        className="h-full transition-all duration-200 ease-in-out group-hover/history:scale-[1.02]"
+        className="h-full w-full transition-all duration-200 ease-in-out group-hover/history:scale-[1.02]"
       />
       {/* Logo */}
       <img
