@@ -13,7 +13,8 @@ import profile from "../assets/perfil.jpg"
 import liveVideoIcon from "../assets/icons/live-video.png"
 import filesIcon from "../assets/icons/files.png"
 import feelingIcon from "../assets/icons/feeling.png"
-import { histories } from "../utils/infotest"
+import { histories, posts } from "../utils/infotest"
+import Post from "../components/home/Post"
 
 const Home = () => {
   const swiperRef = useRef<SwiperRef>(null)
@@ -39,7 +40,7 @@ const Home = () => {
     <div className="text-white bg-[#18191A] flex flex-col items-center">
       <Swiper
         ref={swiperRef}
-        spaceBetween={5}
+        spaceBetween={8}
         // slidesPerView={"auto"}
         allowTouchMove={false}
         slidesPerView={4}
@@ -49,20 +50,23 @@ const Home = () => {
         pagination={{
           clickable: true,
         }}
-        className="w-[82%] mt-6 relative h-[250px]"
+        className="w-[80%] mt-6 relative h-[250px]"
       >
         <SwiperSlide>
           <div className="group/history relative rounded-xl h-full overflow-hidden">
-            <img
-              src={profile}
-              alt=""
-              className="h-3/4 transition-all duration-200 ease-in-out group-hover/history:scale-[1.02]"
-            />
-            <div className="h-1/4 bg-[#242526] flex flex-col items-center">
+            <div className="h-4/5 overflow-hidden">
+              <img
+                src={profile}
+                alt=""
+                className="h-full transition-all duration-200 ease-in-out group-hover/history:scale-[1.02]"
+              />
+            </div>
+
+            <div className="h-1/5 bg-[#242526] flex flex-col items-center">
               <div className="bg-[#075CE5] rounded-full p-1 h-fit w-fit -translate-y-4 border-4 border-[#242526]">
                 <Icon icon="ic:baseline-plus" className="w-6 h-6" />
               </div>
-              <p className="text-sm font-semibold -mt-1">Crear historia</p>
+              <p className="text-sm font-semibold -mt-4">Crear historia</p>
             </div>
           </div>
         </SwiperSlide>
@@ -110,6 +114,9 @@ const Home = () => {
           </button>
         </div>
       </div>
+      {posts.map((post, index) => (
+        <Post data={post} key={index} />
+      ))}
     </div>
   )
 }

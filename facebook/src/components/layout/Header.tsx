@@ -3,7 +3,7 @@ import Perfil from "../../assets/perfil.jpg"
 
 const Header = () => {
   return (
-    <div className="grid grid-cols-11 bg-[#242526] py-1 sticky top-0">
+    <div className="grid grid-cols-11 bg-[#242526] py-1 sticky top-0 z-10">
       <div className="col-span-3 flex py-1 px-4 gap-x-2">
         <Icon icon="logos:facebook" className="w-10 h-10" />
         <input

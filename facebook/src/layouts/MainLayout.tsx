@@ -25,6 +25,8 @@ const MainLayout = ({ children }: Props) => {
     <>
       {/* Header */}
       <Header />
+
+      {/* Left panel */}
       <div className="grid grid-cols-9">
         <div className="pt-4 pl-2 h-[calc(100vh-56px)] text-white bg-[#18191A] col-span-2 overflow-y-hidden hover:overflow-y-scroll sticky top-14">
           <button className="flex items-center gap-x-2 w-full rounded-md p-2 hover:bg-[#303031] transition-all duration-150 ease-in-out">
