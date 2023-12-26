@@ -12,7 +12,7 @@ interface rightPanelState {
   }
 
 export const leftPanelControlStore = create<leftPanelState>()((set) => ({
-    isOpen: true,
+    isOpen: false,
     type: 'state',
     changeLeftPanelState: (open, type) => set({isOpen: open, type: type}),
 }))

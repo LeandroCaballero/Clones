@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import Perfil from "../components/leftPanel/Perfil";
 import Community from "../components/leftPanel/Community";
 import Channels from "../components/leftPanel/Channels";
+import NewChat from "../components/leftPanel/NewChat";
 
 interface Props {
   children: ReactNode;
@@ -20,6 +21,8 @@ const MainLayout = ({ children }: Props) => {
         return <Community />;
       case "channels":
         return <Channels />;
+      case "newChat":
+        return <NewChat />;
       default:
         return <Perfil />;
     }
@@ -33,6 +36,8 @@ const MainLayout = ({ children }: Props) => {
         return "Comunidades";
       case "channels":
         return "Canales";
+      case "newChat":
+        return "Nuevo chat";
       default:
         return "Perfil";
     }

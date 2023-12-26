@@ -1,6 +1,6 @@
-import Avatar from "../assets/me.jpg";
-import SearchSVG from '../assets/svg/Search'
-import OptionsSVG from "../assets/svg/Options";
+import Avatar from "../../assets/me.jpg";
+import SearchSVG from "../../assets/svg/Search";
+import OptionsSVG from "../../assets/svg/Options";
 
 const Chat = () => {
   return (
@@ -15,7 +15,12 @@ const Chat = () => {
           <OptionsSVG />
         </div>
       </div>
-      <div className="h-full"></div>
+
+      {/* Principal content */}
+
+      <div className="h-[calc(100vh-58px)] bg-[#0B141A]">
+        <div className="h-full bg-auto bg-repeat bg-[url('chat-background.png')] opacity-[0.07] bg-[#0B141A]"></div>
+      </div>
     </div>
   );
 };

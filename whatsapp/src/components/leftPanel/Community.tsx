@@ -5,12 +5,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 
 const Community = () => {
   const groups = [
-    // {
-    //   name: "Avisos",
-    //   date: "1/10/2022",
-    //   data: "Se produjo un cambio en los miembros de la comunidad",
-    //   image: <AnnouncementSVG />,
-    // },
     {
       name: "Centralticket - Global",
       date: "4/7/2023",

@@ -1,4 +1,4 @@
-import Chat from "./components/Chat";
+import Chat from "./components/chat/Chat";
 import ChatList from "./components/chatList/Container";
 import MainLayout from "./layouts/Main";
 
