@@ -21,25 +21,25 @@ model User {
 model Chat {
     id        Int       @id @default(autoincrement())
     createdAt DateTime  @default(now()) @db.Timestamp(6)
-    updatedAt DateTime
+    updatedAt DateTime  @updatedAt
     name      String?
     image     String?
     type      ChatType
-    Message   Message[]
-    User      User[]
+    Messages  Message[]
+    Users     User[]
 }
 
 model Message {
     id             Int         @id @default(autoincrement())
     createdAt      DateTime    @default(now()) @db.Timestamp(6)
-    updatedAt      DateTime
+    updatedAt      DateTime    @updatedAt
     userId         Int
     chatId         Int
     messageType    MessageType
     text           String?
-    image          String[]
-    video          String[]
-    audio          String[]
+    image          String?
+    video          String?
+    audio          String?
     forwardedCount Int         @default(0)
     chat           Chat?       @relation(fields: [chatId], references: [id])
     createBy       User        @relation(fields: [userId], references: [id])
