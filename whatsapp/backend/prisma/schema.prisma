@@ -36,7 +36,7 @@ model Message {
     userId         Int
     chatId         Int
     messageType    MessageType
-    message        String?
+    text           String?
     image          String[]
     video          String[]
     audio          String[]
