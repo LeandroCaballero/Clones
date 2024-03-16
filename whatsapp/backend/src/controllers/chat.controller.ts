@@ -1,15 +1,16 @@
+import { z } from "zod";
 import prisma from "../../server/prisma";
-import { Request, Response } from "express";
 import { zod_createChat } from "../zod";
+import { Chat } from "@prisma/client";
 
-export const createChat = async (req: Request, res: Response) => {
+export const createChat = async (
+  data: z.infer<typeof zod_createChat>
+): Promise<Chat> => {
   try {
-    const { body } = req;
-
-    const result = zod_createChat.safeParse(body);
+    const result = zod_createChat.safeParse(data);
 
     if (!result.success) {
-      return res.status(400).json(result.error);
+      throw new Error(result.error.toString());
     }
 
     const { users, type, name, image } = result.data;
@@ -19,17 +20,35 @@ export const createChat = async (req: Request, res: Response) => {
         type,
         name,
         image,
-        // ...(image && { image }),
         Users: { connect: users.map((user) => ({ id: +user })) },
       },
     });
 
     if (!newChat) {
-      throw new Error();
+      throw new Error("Error en el server");
     }
 
-    res.status(200).json(newChat);
+    return newChat;
   } catch (error) {
-    res.status(500).send("Error en el server");
+    throw new Error(error as string);
+  }
+};
+
+export const getOneChat = async (chatId: number): Promise<Chat> => {
+  try {
+    const existChat = await prisma.chat.findFirst({
+      where: { id: chatId },
+      include: {
+        Users: true,
+      },
+    });
+
+    if (!existChat) {
+      throw new Error("No existe el chat");
+    }
+
+    return existChat;
+  } catch (error) {
+    throw new Error(error as string);
   }
 };
