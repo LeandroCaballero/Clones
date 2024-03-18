@@ -5,65 +5,30 @@ import ChannelsSVG from "../../assets/svg/Channels";
 import NewChannelSVG from "../../assets/svg/NewChat";
 import OptionsSVG from "../../assets/svg/Options";
 import Filter from "./Filter";
-import Chat from "./Chat";
+import ChatItem from "./Chat";
 import { leftPanelControlStore } from "../../store/panelControl";
 import { filterContactsStore } from "../../store/users";
 import Contact from "./User";
+import { useQuery } from "react-query";
+import { fetchUsers } from "../../services/chatApi";
+import { Chat } from "../../../types";
 
 const ChatList = () => {
   const { contactsFiltered } = filterContactsStore();
-  const list = [
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-    {
-      messages: [
-        { text: "mensaje 1", read: true },
-        { text: "mensaje 2", read: false },
-      ],
-    },
-  ];
+  const { changeLeftPanelState } = leftPanelControlStore();
 
-  const { type, changeLeftPanelState } = leftPanelControlStore();
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ["chats"],
+    queryFn: fetchUsers,
+  });
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Hubo un error...</span>;
+  }
 
   return (
     <div className="h-screen text-white bg-[#182329] col-span-3 overflow-hidden border-r-[1px] border-[#2E3B43]">
@@ -103,7 +68,7 @@ const ChatList = () => {
           ? contactsFiltered.map((user, index) => (
               <Contact key={index} contact={user} />
             ))
-          : list.map((chat, index) => <Chat key={index} chat={chat} />)}
+          : data.map((chat: Chat) => <ChatItem key={chat.id} chat={chat} />)}
       </div>
     </div>
   );

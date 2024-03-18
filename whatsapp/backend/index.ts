@@ -3,6 +3,8 @@ import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { createServer } from "http";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import router from "./index.routes";
 import { zod_createChat } from "./src/zod";
 import { z } from "zod";
@@ -18,6 +20,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors());
 app.use(router);
+app.use(cookieParser());
 
 dotenv.config();
 
@@ -45,31 +48,14 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("joinExistChat", async (idChat: number) => {
-    try {
-      const existChat = await ChatControl.getOneChat(idChat);
-
-      if (!existChat) {
-        throw new Error("No existe el chat");
-      }
-
-      const existIdChat = existChat.id.toString();
-
-      socket.join(existIdChat);
-      io.to(existIdChat).emit("joinedChat", existChat);
-    } catch (error) {
-      socket.emit("errorExistChat", error);
-    }
+  socket.on("joinExistChat", (idChat: number) => {
+    ChatControl.getOneChat(io, socket, idChat);
   });
 
   socket.on("newMessage", (data: string) => {
     console.log("TEST", data);
     io.emit("recibir", data);
   });
-});
-
-app.get("/", (req, res) => {
-  res.status(200).send("Holasssss");
 });
 
 server.listen(port, () => {

@@ -2,6 +2,7 @@ import { z } from "zod";
 import prisma from "../../server/prisma";
 import { zod_createChat } from "../zod";
 import { Chat } from "@prisma/client";
+import { Server, Socket } from "socket.io";
 
 export const createChat = async (
   data: z.infer<typeof zod_createChat>
@@ -20,7 +21,7 @@ export const createChat = async (
         type,
         name,
         image,
-        Users: { connect: users.map((user) => ({ id: +user })) },
+        users: { connect: users.map((user) => ({ id: +user })) },
       },
     });
 
@@ -34,12 +35,16 @@ export const createChat = async (
   }
 };
 
-export const getOneChat = async (chatId: number): Promise<Chat> => {
+export const getOneChat = async (
+  io: Server,
+  socket: Socket,
+  chatId: number
+) => {
   try {
     const existChat = await prisma.chat.findFirst({
       where: { id: chatId },
       include: {
-        Users: true,
+        users: true,
       },
     });
 
@@ -47,8 +52,29 @@ export const getOneChat = async (chatId: number): Promise<Chat> => {
       throw new Error("No existe el chat");
     }
 
-    return existChat;
+    const existIdChat = existChat.id.toString();
+
+    socket.join(existIdChat);
+    io.to(existIdChat).emit("joinedChat", existChat);
   } catch (error) {
-    throw new Error(error as string);
+    socket.emit("errorExistChat", error);
+  }
+};
+
+export const getAllChat = async (
+  io: Server,
+  socket: Socket,
+  userId: number
+) => {
+  try {
+    const allChats = await prisma.chat.findMany({
+      where: {
+        users: { some: { id: userId } },
+      },
+    });
+
+    socket.emit("allChats", allChats);
+  } catch (error) {
+    socket.emit("errorExistChat", error);
   }
 };

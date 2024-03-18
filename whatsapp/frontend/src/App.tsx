@@ -1,15 +1,20 @@
-import Chat from "./components/chat/Chat";
-import ChatList from "./components/chatList/Container";
-import MainLayout from "./layouts/Main";
+import { AuthProvider } from "./context/auth/AuthProvider";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { RouterProvider } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
+import router from "./router/router";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
-      <MainLayout>
-        <ChatList />
-        <Chat />
-      </MainLayout>
-    </>
+    <AuthProvider>
+      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CookiesProvider>
+    </AuthProvider>
   );
 }
 
