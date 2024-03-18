@@ -18,9 +18,9 @@ const io = new Server(server, {
 });
 
 app.use(express.json());
-app.use(cors());
-app.use(router);
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(cookieParser());
+app.use(router);
 
 dotenv.config();
 

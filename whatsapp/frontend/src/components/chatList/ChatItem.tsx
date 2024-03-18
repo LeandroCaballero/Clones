@@ -6,7 +6,7 @@ interface Props {
   chat: Chat;
 }
 
-const Chat = ({ chat }: Props) => {
+const ChatItem = ({ chat }: Props) => {
   const [colorHour, setColorHour] = useState("text-[#A8B5BD]");
   const [quantityWithoutRead, setQuantityWithoutRead] = useState(0);
   const [otherUser, setOtherUser] = useState<User>();
@@ -50,4 +50,4 @@ const Chat = ({ chat }: Props) => {
   );
 };
 
-export default Chat;
+export default ChatItem;

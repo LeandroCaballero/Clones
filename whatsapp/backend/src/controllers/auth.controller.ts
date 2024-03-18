@@ -66,6 +66,15 @@ export const login = async (req: Request, res: Response) => {
   }
 
   if (await bcrypt.compare(password, existUser.password)) {
+    const token = jwt.sign(
+      { user_id: existUser.id, email },
+      process.env.TOKEN_KEY || "",
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    res.cookie("wptoken", token, { maxAge: 9000000 });
     res.status(201).json(existUser);
   } else {
     res.status(403).json({ message: "Credenciales incorrectas" });
@@ -73,24 +82,29 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const getStatus = async (req: Request, res: Response) => {
-  const wpCookie = req.cookies.wptoken;
+  try {
+    console.log("COOKIES", req.cookies.wptoken);
+    const wpCookie = req.cookies.wptoken;
 
-  const decodedToken = jwt.verify(wpCookie, process.env.TOKEN_KEY || "");
+    const decodedToken = jwt.verify(wpCookie, process.env.TOKEN_KEY || "");
 
-  const { user_id, email } = decodedToken as DecodedToken;
+    const { user_id, email } = decodedToken as DecodedToken;
 
-  const existUser = await prisma.user.findFirst({
-    where: { email, id: +user_id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-    },
-  });
+    const existUser = await prisma.user.findFirst({
+      where: { email, id: +user_id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-  if (!existUser) {
-    return res.status(409).json({ message: "Cuenta no encontrada" });
+    if (!existUser) {
+      return res.status(409).json({ message: "Cuenta no encontrada" });
+    }
+
+    res.status(200).json(existUser);
+  } catch (error) {
+    res.status(500).send("Error en el server");
   }
-
-  res.status(200).json(existUser);
 };

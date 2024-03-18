@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register } from "./src/controllers/auth.controller";
+import { getStatus, login, register } from "./src/controllers/auth.controller";
 import { getAllUsers } from "./src/controllers/users.controller";
 import { saveMessage } from "./src/controllers/message.controller";
 import { createChat } from "./src/controllers/chat.controller";
@@ -27,6 +27,8 @@ router.post("/newChat", createChat);
 
 // Messages
 // router.post("/newMessage", saveMessage);
-// router.get("/status", getStatus);
+
+// Auth
+router.get("/status", getStatus);
 
 export default router;

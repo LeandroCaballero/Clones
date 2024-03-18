@@ -5,7 +5,7 @@ import ChannelsSVG from "../../assets/svg/Channels";
 import NewChannelSVG from "../../assets/svg/NewChat";
 import OptionsSVG from "../../assets/svg/Options";
 import Filter from "./Filter";
-import ChatItem from "./Chat";
+import ChatItem from "./ChatItem";
 import { leftPanelControlStore } from "../../store/panelControl";
 import { filterContactsStore } from "../../store/users";
 import Contact from "./User";
