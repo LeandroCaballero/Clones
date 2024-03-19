@@ -10,8 +10,13 @@ import MessageComponent from "./Message";
 import { Socket, io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { User, Message } from "../../../types";
+import { useQuery } from "react-query";
 
 const Chat = () => {
+  const { data } = useQuery<User>({
+    queryKey: ["currentUser"],
+  });
+
   const [message, setMessage] = useState<Message>({
     text: "",
     user: undefined,
@@ -47,7 +52,7 @@ const Chat = () => {
       <div className="h-[58px] bg-[#1F2C34] flex items-center px-5">
         <div className="flex gap-x-4 items-center min-w-fit">
           <img src={Avatar} alt="" className="rounded-full w-10" />
-          <p className="font-semibold">Leandro Caballero</p>
+          <p className="font-semibold">{data?.name}</p>
         </div>
         <div className="flex gap-x-7 w-full justify-end">
           <SearchSVG />

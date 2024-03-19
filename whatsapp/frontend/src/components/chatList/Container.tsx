@@ -10,25 +10,19 @@ import { leftPanelControlStore } from "../../store/panelControl";
 import { filterContactsStore } from "../../store/users";
 import Contact from "./User";
 import { useQuery } from "react-query";
-import { fetchUsers } from "../../services/chatApi";
-import { Chat } from "../../../types";
+import { fetchChats } from "../../services/chatApi";
+import { Chat, User } from "../../../types";
 
 const ChatList = () => {
   const { contactsFiltered } = filterContactsStore();
   const { changeLeftPanelState } = leftPanelControlStore();
 
-  const { isLoading, isError, data } = useQuery({
+  const currentUser = useQuery<User>({ queryKey: ["currentUser"] });
+
+  const { isLoading, isError, data } = useQuery<Chat[]>({
     queryKey: ["chats"],
-    queryFn: fetchUsers,
+    queryFn: () => fetchChats(currentUser.data?.id),
   });
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Hubo un error...</span>;
-  }
 
   return (
     <div className="h-screen text-white bg-[#182329] col-span-3 overflow-hidden border-r-[1px] border-[#2E3B43]">
@@ -64,11 +58,24 @@ const ChatList = () => {
 
       {/* List */}
       <div className="overflow-y-scroll sticky h-[calc(100vh-110px)]">
-        {contactsFiltered.length > 0
-          ? contactsFiltered.map((user, index) => (
-              <Contact key={index} contact={user} />
-            ))
-          : data.map((chat: Chat) => <ChatItem key={chat.id} chat={chat} />)}
+        {isLoading && <p className="text-center">Cargando los chats...</p>}
+
+        {isError && (
+          <p className="text-center">Hubo un error al cargar los chats...</p>
+        )}
+
+        {contactsFiltered.length > 0 ? (
+          contactsFiltered.map((user, index) => (
+            <Contact key={index} contact={user} />
+          ))
+        ) : data && data?.length > 0 ? (
+          data?.map((chat: Chat) => <ChatItem key={chat.id} chat={chat} />)
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full">
+            <p className="text-xl">Sin chats</p>
+            <p className="text-sm">Busque un contacto e inicie un chat</p>
+          </div>
+        )}
       </div>
     </div>
   );

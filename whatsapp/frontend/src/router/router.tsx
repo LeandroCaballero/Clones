@@ -1,8 +1,7 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../components/login/Login";
-import { ReactNode, useEffect, useState } from "react";
-import { authStore } from "../store/auth";
+import { ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { isLogged } from "../services/authApi";
 import { useQuery } from "react-query";
@@ -54,7 +53,6 @@ function PrivateRoute({ children }: Props) {
   }
 
   if (!data) {
-    console.log("data", data);
     return <Navigate to="/login" />;
   }
 

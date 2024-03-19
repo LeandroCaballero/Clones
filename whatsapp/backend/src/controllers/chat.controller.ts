@@ -3,6 +3,7 @@ import prisma from "../../server/prisma";
 import { zod_createChat } from "../zod";
 import { Chat } from "@prisma/client";
 import { Server, Socket } from "socket.io";
+import { Request, Response } from "express";
 
 export const createChat = async (
   data: z.infer<typeof zod_createChat>
@@ -61,20 +62,18 @@ export const getOneChat = async (
   }
 };
 
-export const getAllChat = async (
-  io: Server,
-  socket: Socket,
-  userId: number
-) => {
+export const getAllChat = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
   try {
     const allChats = await prisma.chat.findMany({
       where: {
-        users: { some: { id: userId } },
+        users: { some: { id: +id } },
       },
     });
 
-    socket.emit("allChats", allChats);
+    res.status(200).json(allChats);
   } catch (error) {
-    socket.emit("errorExistChat", error);
+    res.status(500).json({ message: "Error en el server" });
   }
 };

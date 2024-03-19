@@ -9,7 +9,6 @@ import router from "./index.routes";
 import { zod_createChat } from "./src/zod";
 import { z } from "zod";
 import * as ChatControl from "./src/controllers";
-import { Chat } from "@prisma/client";
 
 const app = express();
 const server = createServer(app);
@@ -52,8 +51,11 @@ io.on("connection", (socket) => {
     ChatControl.getOneChat(io, socket, idChat);
   });
 
+  // socket.on("getAllChats", (idChat: number) => {
+  //   ChatControl.getAllChat(io, socket, idChat);
+  // });
+
   socket.on("newMessage", (data: string) => {
-    console.log("TEST", data);
     io.emit("recibir", data);
   });
 });

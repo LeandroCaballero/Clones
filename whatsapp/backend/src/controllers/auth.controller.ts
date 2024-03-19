@@ -83,7 +83,6 @@ export const login = async (req: Request, res: Response) => {
 
 export const getStatus = async (req: Request, res: Response) => {
   try {
-    console.log("COOKIES", req.cookies.wptoken);
     const wpCookie = req.cookies.wptoken;
 
     const decodedToken = jwt.verify(wpCookie, process.env.TOKEN_KEY || "");

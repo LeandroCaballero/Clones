@@ -7,9 +7,9 @@ export const isLogged = async (cookies: any) => {
         credentials: "include",
       });
 
-      if (response?.ok) {
-        return response.json();
-      }
+      if (!response.ok) throw new Error("Error en la petición");
+
+      return response.json();
     }
   } catch (e) {
     console.log(`is logged in error ${e}`);

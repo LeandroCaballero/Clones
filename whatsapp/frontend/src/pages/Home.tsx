@@ -1,13 +1,21 @@
-import Chat from "../components/chat/Chat";
+import { useQuery } from "react-query";
+import ChatComponent from "../components/chat/Chat";
 import ChatList from "../components/chatList/Container";
 import MainLayout from "../layouts/Main";
+import { Chat } from "../../types";
+import Preview from "../components/chat/Preview";
 
 const Home = () => {
+  const { data } = useQuery<Chat>({
+    queryKey: ["chat"],
+  });
+
   return (
     <>
       <MainLayout>
         <ChatList />
-        <Chat />
+        {data ? <ChatComponent /> : <Preview />}
+        <ChatComponent />
       </MainLayout>
     </>
   );
