@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import FilterSVG from "../../assets/svg/Filter";
 import { useEffect, useState } from "react";
 import { filterContactsStore } from "../../store/users";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { User } from "../../../types";
 import { fetchUsers } from "../../services/userApi";
 
@@ -11,7 +11,11 @@ const Filter = () => {
   const { data } = useQuery<User[]>({
     queryKey: ["contacts"],
     queryFn: fetchUsers,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
+
+  const currentUser = useQuery<User>({ queryKey: ["currentUser"] });
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -25,10 +29,12 @@ const Filter = () => {
   }
 
   const filterUsers = () => {
+    console.log("FILTER", currentUser);
     const usersFiltered = data?.filter(
       (user) =>
         user.name.toLowerCase().includes(inputSearch.toLowerCase()) &&
-        inputSearch != ""
+        inputSearch != "" &&
+        currentUser.data?.id != user.id
     );
 
     if (usersFiltered) setContactsFiltered(usersFiltered);

@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import ChatComponent from "../components/chat/Chat";
 import ChatList from "../components/chatList/Container";
 import MainLayout from "../layouts/Main";
@@ -7,7 +7,7 @@ import Preview from "../components/chat/Preview";
 
 const Home = () => {
   const { data } = useQuery<Chat>({
-    queryKey: ["chat"],
+    queryKey: ["currentChat"],
   });
 
   return (
@@ -15,7 +15,6 @@ const Home = () => {
       <MainLayout>
         <ChatList />
         {data ? <ChatComponent /> : <Preview />}
-        <ChatComponent />
       </MainLayout>
     </>
   );

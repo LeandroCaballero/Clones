@@ -9,32 +9,35 @@ import MessageComponent from "./Message";
 
 import { Socket, io } from "socket.io-client";
 import { useEffect, useState } from "react";
-import { User, Message } from "../../../types";
-import { useQuery } from "react-query";
+import type { User, Message, Chat } from "../../../types";
+import { useQuery } from "@tanstack/react-query";
 
 const Chat = () => {
-  const { data } = useQuery<User>({
+  const currentUser = useQuery<User>({
     queryKey: ["currentUser"],
   });
 
-  const [message, setMessage] = useState<Message>({
-    text: "",
-    user: undefined,
+  const currentChat = useQuery<Chat>({
+    queryKey: ["currentChat"],
   });
+
+  const [message, setMessage] = useState<{ text: string; user?: number }>({
+    text: "",
+    user: currentUser.data?.id,
+  });
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setsocket] = useState<Socket>();
-  const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("http://localhost:3000").emit(
+      "connection",
+      currentChat.data?.id
+    );
+
     setsocket(socket);
 
-    socket.on("recibir", (data: Message) => {
-      console.log(data);
-      setMessages((oldState) => [...oldState, data]);
-    });
-
-    setCurrentUser(JSON.parse(localStorage.getItem("user") || ""));
+    if (currentChat.data) setMessages(currentChat.data.messages);
   }, []);
 
   const sendMessage = (e: React.FormEvent) => {
@@ -43,7 +46,7 @@ const Chat = () => {
     if (message.text.length > 0) {
       console.log(message);
       socket?.emit("newMessage", { ...message });
-      setMessage({ text: "", user: undefined });
+      setMessage({ ...message, text: "" });
     }
   };
 
@@ -52,7 +55,7 @@ const Chat = () => {
       <div className="h-[58px] bg-[#1F2C34] flex items-center px-5">
         <div className="flex gap-x-4 items-center min-w-fit">
           <img src={Avatar} alt="" className="rounded-full w-10" />
-          <p className="font-semibold">{data?.name}</p>
+          <p className="font-semibold">{currentUser.data?.name}</p>
         </div>
         <div className="flex gap-x-7 w-full justify-end">
           <SearchSVG />
@@ -69,7 +72,7 @@ const Chat = () => {
             <MessageComponent
               key={i}
               message={message}
-              currentUser={currentUser}
+              currentUser={currentUser.data}
             />
           ))}
         </div>
@@ -89,9 +92,7 @@ const Chat = () => {
             </button>
             <input
               value={message.text}
-              onChange={(e) =>
-                setMessage({ text: e.target.value, user: currentUser })
-              }
+              onChange={(e) => setMessage({ ...message, text: e.target.value })}
               type="text"
               className="bg-[#2A3942] w-full outline-none"
               placeholder="Escribe un mensaje"

@@ -4,7 +4,7 @@ import Login from "../components/login/Login";
 import { ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { isLogged } from "../services/authApi";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   children: ReactNode;
@@ -39,9 +39,10 @@ function PrivateRoute({ children }: Props) {
   // const { currentUser } = authStore();
   // if (currentUser) children;
 
-  const { isLoading, isError, data } = useQuery({
+  const { isLoading, isError, data, error } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => isLogged(cookies),
+    retry: false,
   });
 
   if (isLoading) {
@@ -49,12 +50,15 @@ function PrivateRoute({ children }: Props) {
   }
 
   if (isError) {
-    return <span>Hubo un error</span>;
+    return <Navigate to="/login" />;
   }
 
   if (!data) {
+    console.log(data);
     return <Navigate to="/login" />;
   }
+
+  // console.log("desde el router", data);
 
   return children;
 }

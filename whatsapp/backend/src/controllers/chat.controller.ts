@@ -5,11 +5,9 @@ import { Chat } from "@prisma/client";
 import { Server, Socket } from "socket.io";
 import { Request, Response } from "express";
 
-export const createChat = async (
-  data: z.infer<typeof zod_createChat>
-): Promise<Chat> => {
+export const createChat = async (req: Request, res: Response) => {
   try {
-    const result = zod_createChat.safeParse(data);
+    const result = zod_createChat.safeParse(req.body);
 
     if (!result.success) {
       throw new Error(result.error.toString());
@@ -36,16 +34,14 @@ export const createChat = async (
   }
 };
 
-export const getOneChat = async (
-  io: Server,
-  socket: Socket,
-  chatId: number
-) => {
+export const getOneChat = async (req: Request, res: Response) => {
+  const { chatId } = req.params;
   try {
     const existChat = await prisma.chat.findFirst({
-      where: { id: chatId },
+      where: { id: +chatId },
       include: {
         users: true,
+        messages: true,
       },
     });
 
@@ -53,27 +49,31 @@ export const getOneChat = async (
       throw new Error("No existe el chat");
     }
 
-    const existIdChat = existChat.id.toString();
-
-    socket.join(existIdChat);
-    io.to(existIdChat).emit("joinedChat", existChat);
+    res.status(200).json(existChat);
+    // socket.join(existIdChat);
+    // io.to(existIdChat).emit("joinedChat", existChat);
   } catch (error) {
-    socket.emit("errorExistChat", error);
+    res.status(500).json({ message: "Error en el server" });
   }
 };
 
 export const getAllChat = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { userId } = req.params;
 
   try {
     const allChats = await prisma.chat.findMany({
       where: {
-        users: { some: { id: +id } },
+        users: { some: { id: +userId } },
+      },
+      include: {
+        users: true,
+        _count: { select: { messages: { where: { read: true } } } },
       },
     });
 
     res.status(200).json(allChats);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error en el server" });
   }
 };

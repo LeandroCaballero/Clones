@@ -1,6 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { Chat, User } from "../../../types";
 import Avatar from "../../assets/me.jpg";
 import { useState, useEffect } from "react";
+import { getOneChat } from "../../services/chatApi";
 
 interface Props {
   chat: Chat;
@@ -11,23 +13,33 @@ const ChatItem = ({ chat }: Props) => {
   const [quantityWithoutRead, setQuantityWithoutRead] = useState(0);
   const [otherUser, setOtherUser] = useState<User>();
 
+  const { refetch } = useQuery<Chat>({
+    queryKey: ["currentChat"],
+    queryFn: () => getOneChat(chat.id),
+    enabled: false,
+    retry: false,
+  });
+
   useEffect(() => {
-    const messagesWithoutRead = chat.messages.filter(
-      (message) => !message.read
-    );
-    setQuantityWithoutRead(messagesWithoutRead.length);
+    // const messagesWithoutRead = chat.messages.filter(
+    //   (message) => !message.read
+    // );
+    setQuantityWithoutRead(chat._count.messages);
 
     //Cambiar para comparar con el current user logged
     const otherUser = chat.users.find((user) => user.id != 20);
     setOtherUser(otherUser);
 
-    if (messagesWithoutRead.length > 0) {
+    if (chat._count.messages > 0) {
       setColorHour("text-[#00A884]");
     }
   }, []);
 
   return (
-    <div className="flex bg-[#111B21] px-1 hover:bg-[#202C33] cursor-pointer">
+    <div
+      className="flex bg-[#111B21] px-1 hover:bg-[#202C33] cursor-pointer"
+      onClick={() => refetch()}
+    >
       <div className="w-2/12 flex justify-center items-center">
         <img src={Avatar} alt="" className="rounded-full w-12 h-12" />
       </div>

@@ -10,10 +10,4 @@ export const getAllUsers = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send("Error en el server");
   }
-
-  // res.json({
-  //   id: user.id,
-  //   email: user.email,
-  //   message: "Registro exitoso, inicie sesión",
-  // })
 };

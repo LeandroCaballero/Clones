@@ -55,29 +55,33 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  console.log("LOGIN BACK", email, password);
 
-  const existUser = await prisma.user.findFirst({ where: { email } });
+  try {
+    const existUser = await prisma.user.findFirst({ where: { email } });
 
-  if (!existUser) {
-    return res
-      .status(409)
-      .json({ message: "El email ingresado no se encuentra registrado" });
-  }
+    if (!existUser) {
+      return res
+        .status(409)
+        .json({ message: "El email ingresado no se encuentra registrado" });
+    }
 
-  if (await bcrypt.compare(password, existUser.password)) {
-    const token = jwt.sign(
-      { user_id: existUser.id, email },
-      process.env.TOKEN_KEY || "",
-      {
-        expiresIn: "7d",
-      }
-    );
+    if (await bcrypt.compare(password, existUser.password)) {
+      const token = jwt.sign(
+        { user_id: existUser.id, email },
+        process.env.TOKEN_KEY || "",
+        {
+          expiresIn: "7d",
+        }
+      );
 
-    res.cookie("wptoken", token, { maxAge: 9000000 });
-    res.status(201).json(existUser);
-  } else {
-    res.status(403).json({ message: "Credenciales incorrectas" });
+      res.cookie("wptoken", token, { maxAge: 9000000 });
+      res.status(201).json(existUser);
+    } else {
+      res.status(403).json({ message: "Credenciales incorrectas" });
+    }
+  } catch (error) {
+    res.status(500).send("Error en el server");
   }
 };
 

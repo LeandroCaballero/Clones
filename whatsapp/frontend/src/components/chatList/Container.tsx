@@ -8,20 +8,25 @@ import Filter from "./Filter";
 import ChatItem from "./ChatItem";
 import { leftPanelControlStore } from "../../store/panelControl";
 import { filterContactsStore } from "../../store/users";
-import Contact from "./User";
-import { useQuery } from "react-query";
+import Contact from "./Contact";
+import { useQuery } from "@tanstack/react-query";
 import { fetchChats } from "../../services/chatApi";
 import { Chat, User } from "../../../types";
+import { isLogged } from "../../services/authApi";
 
 const ChatList = () => {
   const { contactsFiltered } = filterContactsStore();
   const { changeLeftPanelState } = leftPanelControlStore();
 
-  const currentUser = useQuery<User>({ queryKey: ["currentUser"] });
+  const currentUser = useQuery<User>({
+    queryKey: ["currentUser"],
+  });
 
   const { isLoading, isError, data } = useQuery<Chat[]>({
-    queryKey: ["chats"],
+    queryKey: ["chats", currentUser],
     queryFn: () => fetchChats(currentUser.data?.id),
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -66,7 +71,11 @@ const ChatList = () => {
 
         {contactsFiltered.length > 0 ? (
           contactsFiltered.map((user, index) => (
-            <Contact key={index} contact={user} />
+            <Contact
+              key={index}
+              contact={user}
+              currentUserId={currentUser.data?.id}
+            />
           ))
         ) : data && data?.length > 0 ? (
           data?.map((chat: Chat) => <ChatItem key={chat.id} chat={chat} />)
