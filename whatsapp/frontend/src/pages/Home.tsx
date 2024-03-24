@@ -6,15 +6,17 @@ import { Chat } from "../../types";
 import Preview from "../components/chat/Preview";
 
 const Home = () => {
-  const { data } = useQuery<Chat>({
+  // const currentChat = useGetCachedQueryData("currentChat") as Chat;
+  const currentChat = useQuery<Chat>({
     queryKey: ["currentChat"],
+    enabled: false,
   });
 
   return (
     <>
       <MainLayout>
         <ChatList />
-        {data ? <ChatComponent /> : <Preview />}
+        {currentChat.data ? <ChatComponent /> : <Preview />}
       </MainLayout>
     </>
   );

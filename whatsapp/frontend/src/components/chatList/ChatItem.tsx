@@ -3,6 +3,7 @@ import { Chat, User } from "../../../types";
 import Avatar from "../../assets/me.jpg";
 import { useState, useEffect } from "react";
 import { getOneChat } from "../../services/chatApi";
+import { useGetCachedQueryData } from "../../hooks/useCurrentUser";
 
 interface Props {
   chat: Chat;
@@ -20,14 +21,18 @@ const ChatItem = ({ chat }: Props) => {
     retry: false,
   });
 
+  const currentUser = useGetCachedQueryData("currentUser") as User;
+
   useEffect(() => {
+    console.log("USER", currentUser);
     // const messagesWithoutRead = chat.messages.filter(
     //   (message) => !message.read
     // );
     setQuantityWithoutRead(chat._count.messages);
 
     //Cambiar para comparar con el current user logged
-    const otherUser = chat.users.find((user) => user.id != 20);
+    const otherUser = chat.users.find((user) => user.id != currentUser?.id);
+
     setOtherUser(otherUser);
 
     if (chat._count.messages > 0) {

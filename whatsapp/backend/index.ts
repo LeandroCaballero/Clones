@@ -51,8 +51,11 @@ io.on("connection", (socket) => {
   //   }
   // });
 
-  socket.on("joinExistChat", (idChat: number) => {
-    ChatControl.getOneChat(io, socket, idChat);
+  socket.on("joinExistChat", (idChat: string) => {
+    console.log("ID del chat", idChat);
+    socket.join(idChat);
+    io.to(idChat).emit("jeje", idChat);
+    // ChatControl.getOneChat(io, socket, idChat);
   });
 
   // socket.on("getAllChats", (idChat: number) => {

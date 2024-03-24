@@ -11,34 +11,46 @@ import { Socket, io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import type { User, Message, Chat } from "../../../types";
 import { useQuery } from "@tanstack/react-query";
+import { useGetCachedQueryData } from "../../hooks/useCurrentUser";
 
 const Chat = () => {
-  const currentUser = useQuery<User>({
-    queryKey: ["currentUser"],
-  });
+  const currentUser = useGetCachedQueryData("currentUser") as User;
 
   const currentChat = useQuery<Chat>({
     queryKey: ["currentChat"],
+    enabled: false,
   });
 
   const [message, setMessage] = useState<{ text: string; user?: number }>({
     text: "",
-    user: currentUser.data?.id,
+    user: currentUser.id,
   });
 
   const [messages, setMessages] = useState<Message[]>([]);
-  const [socket, setsocket] = useState<Socket>();
+  const [socket, setSocket] = useState<Socket>();
 
   useEffect(() => {
-    const socket = io("http://localhost:3000").emit(
-      "connection",
-      currentChat.data?.id
-    );
+    if (socket) {
+      socket.disconnect();
+    }
 
-    setsocket(socket);
+    if (currentChat.data) {
+      const newSocket = io("http://localhost:3000");
 
-    if (currentChat.data) setMessages(currentChat.data.messages);
-  }, []);
+      newSocket.on("recibir", (data: Message) => {
+        setMessages((oldState) => [...oldState, data]);
+      });
+
+      newSocket.on("jeje", (data: Message) => {
+        console.log("test de jeje");
+      });
+
+      setSocket(newSocket);
+
+      setMessages(currentChat.data.messages);
+      newSocket.emit("joinExistChat", currentChat.data.id);
+    }
+  }, [currentChat.data]);
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +67,12 @@ const Chat = () => {
       <div className="h-[58px] bg-[#1F2C34] flex items-center px-5">
         <div className="flex gap-x-4 items-center min-w-fit">
           <img src={Avatar} alt="" className="rounded-full w-10" />
-          <p className="font-semibold">{currentUser.data?.name}</p>
+          <p className="font-semibold">
+            {
+              currentChat.data?.users.find((user) => user.id != currentUser.id)
+                ?.name
+            }
+          </p>
         </div>
         <div className="flex gap-x-7 w-full justify-end">
           <SearchSVG />
@@ -72,7 +89,7 @@ const Chat = () => {
             <MessageComponent
               key={i}
               message={message}
-              currentUser={currentUser.data}
+              currentUser={currentUser}
             />
           ))}
         </div>

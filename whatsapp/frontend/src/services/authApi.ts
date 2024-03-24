@@ -32,8 +32,8 @@ export const login = async (loginData: { email: string; password: string }) => {
 };
 
 export const isLogged = async (cookies: any) => {
-  console.log(cookies);
   try {
+    console.log(cookies);
     if (cookies.wptoken) {
       const response = await fetch(`${API_URL}/status`, {
         credentials: "include",
@@ -42,7 +42,6 @@ export const isLogged = async (cookies: any) => {
       if (!response.ok) throw new Error("Error en la petición");
 
       let res = await response.json();
-      console.log(1, res);
       return await res;
     }
   } catch (e) {

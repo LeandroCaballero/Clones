@@ -43,13 +43,17 @@ function PrivateRoute({ children }: Props) {
     queryKey: ["currentUser"],
     queryFn: () => isLogged(cookies),
     retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
+  // console.log("SE RENDERIZA PRIVATE ROUTE", isLoading, isError, data, error);
 
   if (isLoading) {
     return <span>Cargando usuario</span>;
   }
 
   if (isError) {
+    console.log("ENTRA EN ISERROR", isError, error);
     return <Navigate to="/login" />;
   }
 
@@ -57,8 +61,6 @@ function PrivateRoute({ children }: Props) {
     console.log(data);
     return <Navigate to="/login" />;
   }
-
-  // console.log("desde el router", data);
 
   return children;
 }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Chat, User } from "../../../types";
 import Avatar from "../../assets/me.jpg";
 import { createChat } from "../../services/chatApi";

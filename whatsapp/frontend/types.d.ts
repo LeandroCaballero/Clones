@@ -23,6 +23,7 @@ export type Message = {
 };
 
 export type Chat = {
+  _count: any;
   id: number;
   createdAt: Date;
   updatedAt: Date;

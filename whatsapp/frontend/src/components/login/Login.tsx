@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "../../services/authApi";
-import { User } from "../../../types";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -25,7 +24,7 @@ const Login = () => {
     mutationFn: () => login(loginData),
     onSuccess: (data) => {
       console.log("desde el login", data);
-      queryClient.setQueryData(["currentUser"], data);
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       navigate("/");
     },
     onError: (error) => {

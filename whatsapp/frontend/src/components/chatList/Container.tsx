@@ -12,19 +12,17 @@ import Contact from "./Contact";
 import { useQuery } from "@tanstack/react-query";
 import { fetchChats } from "../../services/chatApi";
 import { Chat, User } from "../../../types";
-import { isLogged } from "../../services/authApi";
+import { useGetCachedQueryData } from "../../hooks/useCurrentUser";
 
 const ChatList = () => {
   const { contactsFiltered } = filterContactsStore();
   const { changeLeftPanelState } = leftPanelControlStore();
 
-  const currentUser = useQuery<User>({
-    queryKey: ["currentUser"],
-  });
+  const currentUser = useGetCachedQueryData("currentUser") as User;
 
   const { isLoading, isError, data } = useQuery<Chat[]>({
-    queryKey: ["chats", currentUser],
-    queryFn: () => fetchChats(currentUser.data?.id),
+    queryKey: ["chats"],
+    queryFn: () => fetchChats(currentUser.id),
     retry: false,
     refetchOnWindowFocus: false,
   });
@@ -74,7 +72,7 @@ const ChatList = () => {
             <Contact
               key={index}
               contact={user}
-              currentUserId={currentUser.data?.id}
+              currentUserId={currentUser.id}
             />
           ))
         ) : data && data?.length > 0 ? (
