@@ -1,15 +1,15 @@
 import prisma from "../../server/prisma";
 import { Request, Response } from "express";
 import { zod_createMessage } from "../zod/message";
+import { Message } from "@prisma/client";
 
-export const createMessage = async (req: Request, res: Response) => {
+export const createMessage = async (data: Message) => {
+  console.log("Data", data);
   try {
-    const { body } = req;
-
-    const result = zod_createMessage.safeParse(body);
+    const result = zod_createMessage.safeParse(data);
 
     if (!result.success) {
-      return res.status(400).json(result.error);
+      throw new Error("Error al crear mensaje");
     }
 
     const { chatId, messageType, userId, audio, image, text, video } =
@@ -22,8 +22,8 @@ export const createMessage = async (req: Request, res: Response) => {
         image,
         text,
         video,
-        createBy: { connect: { id: +userId } },
-        chat: { connect: { id: +chatId } },
+        createBy: { connect: { id: userId } },
+        chat: { connect: { id: chatId } },
       },
     });
 
@@ -31,8 +31,8 @@ export const createMessage = async (req: Request, res: Response) => {
       throw new Error();
     }
 
-    res.status(200).json({});
+    return newMessage;
   } catch (error) {
-    res.status(500).send("Error en el server");
+    throw new Error("Error en el server");
   }
 };

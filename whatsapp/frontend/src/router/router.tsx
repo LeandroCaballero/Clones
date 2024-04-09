@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
-import Login from "../components/login/Login";
+import Login from "../pages/Login";
 import { ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { isLogged } from "../services/authApi";

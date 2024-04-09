@@ -10,6 +10,8 @@ import { zod_createChat } from "./src/zod";
 import { z } from "zod";
 import * as ChatControl from "./src/controllers";
 import morgan from "morgan";
+import { createMessage } from "./src/controllers/message.controller";
+import { Message } from "@prisma/client";
 
 const app = express();
 const server = createServer(app);
@@ -36,34 +38,14 @@ io.on("connection", (socket) => {
     console.log("a user disconnected");
   });
 
-  // socket.on("newChat", async (data: z.infer<typeof zod_createChat>) => {
-  //   try {
-  //     const newChat = await ChatControl.createChat(data);
-
-  //     if (newChat) {
-  //       const idChat = newChat.id.toString();
-
-  //       socket.join(idChat);
-  //       io.to(idChat).emit("chatCreated", idChat);
-  //     }
-  //   } catch (error) {
-  //     socket.emit("errorCreateChat", error);
-  //   }
-  // });
-
-  socket.on("joinExistChat", (idChat: string) => {
-    console.log("ID del chat", idChat);
-    socket.join(idChat);
-    io.to(idChat).emit("jeje", idChat);
-    // ChatControl.getOneChat(io, socket, idChat);
+  socket.on("joinExistChat", (idChat: number) => {
+    socket.join(String(idChat));
   });
 
-  // socket.on("getAllChats", (idChat: number) => {
-  //   ChatControl.getAllChat(io, socket, idChat);
-  // });
-
-  socket.on("newMessage", (data: string) => {
-    io.emit("recibir", data);
+  socket.on("newMessage", (data: Message) => {
+    createMessage(data).then((res) =>
+      io.to(String(data.chatId)).emit("newMessage", res)
+    );
   });
 });
 

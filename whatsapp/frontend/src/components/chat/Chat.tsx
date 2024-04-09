@@ -21,9 +21,16 @@ const Chat = () => {
     enabled: false,
   });
 
-  const [message, setMessage] = useState<{ text: string; user?: number }>({
+  const [message, setMessage] = useState<{
+    text: string;
+    userId?: number;
+    chatId?: number;
+    messageType: string;
+  }>({
     text: "",
-    user: currentUser.id,
+    userId: currentUser.id,
+    chatId: currentChat.data?.id,
+    messageType: "Text",
   });
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -37,12 +44,8 @@ const Chat = () => {
     if (currentChat.data) {
       const newSocket = io("http://localhost:3000");
 
-      newSocket.on("recibir", (data: Message) => {
+      newSocket.on("newMessage", (data: Message) => {
         setMessages((oldState) => [...oldState, data]);
-      });
-
-      newSocket.on("jeje", (data: Message) => {
-        console.log("test de jeje");
       });
 
       setSocket(newSocket);
@@ -116,7 +119,7 @@ const Chat = () => {
             />
           </div>
           {message.text.length > 0 ? (
-            <button>
+            <button type="submit">
               <SendSVG
                 height={28}
                 width={28}
@@ -125,7 +128,7 @@ const Chat = () => {
               />
             </button>
           ) : (
-            <button>
+            <button type="submit">
               <MicSVG height={28} width={28} color="#8696A0" />
             </button>
           )}

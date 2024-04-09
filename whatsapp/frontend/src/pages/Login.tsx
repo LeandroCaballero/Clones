@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { login } from "../../services/authApi";
+import { login } from "../services/authApi";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 

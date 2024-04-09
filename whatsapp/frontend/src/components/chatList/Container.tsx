@@ -13,10 +13,12 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchChats } from "../../services/chatApi";
 import { Chat, User } from "../../../types";
 import { useGetCachedQueryData } from "../../hooks/useCurrentUser";
+import { useState } from "react";
 
 const ChatList = () => {
   const { contactsFiltered } = filterContactsStore();
   const { changeLeftPanelState } = leftPanelControlStore();
+  const [openOptionMenu, setOpenOptionMenu] = useState(false);
 
   const currentUser = useGetCachedQueryData("currentUser") as User;
 
@@ -50,7 +52,7 @@ const ChatList = () => {
           <button onClick={() => changeLeftPanelState(true, "newChat")}>
             <NewChannelSVG />
           </button>
-          <button>
+          <button onClick={() => changeLeftPanelState(true, "newChat")}>
             <OptionsSVG />
           </button>
         </div>

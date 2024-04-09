@@ -24,7 +24,6 @@ const ChatItem = ({ chat }: Props) => {
   const currentUser = useGetCachedQueryData("currentUser") as User;
 
   useEffect(() => {
-    console.log("USER", currentUser);
     // const messagesWithoutRead = chat.messages.filter(
     //   (message) => !message.read
     // );
