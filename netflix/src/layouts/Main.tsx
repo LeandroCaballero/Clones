@@ -23,14 +23,14 @@ const MainLoyout = ({ children }: Props) => {
   return (
     <>
       <header
-        className={`grid grid-cols-11 px-14 h-[68px] fixed items-center justify-center transition-all duration-300 ease-linear ${
+        className={`z-10 grid grid-cols-11 px-14 h-[68px] fixed items-center justify-center transition-all duration-300 ease-linear ${
           scroll
             ? "bg-gradient-to-b from-[#060606] to-[#141414]"
             : "bg-gradient-to-b from-[#060606] to-transparent"
         } w-full text-white`}
       >
         <img src="/logo.png" alt="" className="col-span-1 w-10/12" />
-        <div className="col-span-8 flex gap-x-5 text-sm px-5">
+        <div className="col-span-8 flex gap-x-4 text-sm px-5">
           <p>Inicio</p>
           <p>Series</p>
           <p>Peliculas</p>
